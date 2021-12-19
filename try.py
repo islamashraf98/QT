@@ -2,6 +2,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QIcon
 from PyQt5 import QtGui
 import sys
+import socket
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -88,7 +89,15 @@ class MainWindow(QMainWindow):
     def clear_sensors(self):
         for i in range(self.vertical_layout.count()):
             self.vertical_layout.itemAt(i).widget().deleteLater()
-        
+
+    def send_data(self, data):
+        TCP_IP = '127.0.0.1'
+        TCP_PORT = 5005
+        BUFFER_SIZE = 1024
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((TCP_IP, TCP_PORT))
+        s.send(data)
+        s.close()
 
     def button_click(self):
         number_of_sensors = self.textbox.text
@@ -100,7 +109,7 @@ class MainWindow(QMainWindow):
         for i, j in zip(self.combobox_options, range(length)):
             Dict[j] = i.currentText()
         Dict[length] = self.yes.text() if self.yes.isChecked() else self.no.text()
-        print (Dict)
+        self.send_data(Dict)
             
 
 app = QApplication(sys.argv)
