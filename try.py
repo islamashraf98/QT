@@ -21,7 +21,6 @@ class MainWindow(QMainWindow):
         # Horizontal layout for submit and clear buttons
         self.horizontal_layout2 = QHBoxLayout()
 
-
         # Parent layout for any layout in the class
         self.layout = QVBoxLayout()
 
@@ -83,6 +82,13 @@ class MainWindow(QMainWindow):
             self.combobox_options.append(sensors_combobox)
         self.layout.addLayout(self.vertical_layout)
         self.camera()
+        
+        self.layout.addLayout(self.vertical_layout)
+
+    def clear_sensors(self):
+        for i in range(self.vertical_layout.count()):
+            self.vertical_layout.itemAt(i).widget().deleteLater()
+        
 
     def button_click(self):
         number_of_sensors = self.textbox.text
