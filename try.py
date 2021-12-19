@@ -3,6 +3,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5 import QtGui
 import sys
 import socket
+import json
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -91,17 +92,15 @@ class MainWindow(QMainWindow):
             self.vertical_layout.itemAt(i).widget().deleteLater()
 
     def send_data(self, data):
+        data= str.encode(json.dumps(data))
         TCP_IP = '127.0.0.1'
-        TCP_PORT = 5005
+        TCP_PORT = 8000
         BUFFER_SIZE = 1024
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
         s.send(data)
         s.close()
-
-    def button_click(self):
-        number_of_sensors = self.textbox.text
-        print (number_of_sensors)
+        print (data)
 
     def submit_click(self):
         Dict = {}
