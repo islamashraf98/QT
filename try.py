@@ -57,17 +57,20 @@ class MainWindow(QMainWindow):
         return pb
         
     def sensors(self):
-        self.previous_layout = None
         number_of_sensors = int(self.textbox.text())
-        if (self.previous_layout != None):
-            # for i in range (self.previous_layout.count()):
-            self.previous_layout.itemAt(0).widget().deleteLater()
+
         for i in range(number_of_sensors):
             sensors_combobox = QComboBox()
             sensors_combobox.addItems(['zeby'])
             self.vertical_layout.addWidget(sensors_combobox)
+        
         self.layout.addLayout(self.vertical_layout)
-        self.previous_layout = self.vertical_layout
+
+    def clear_sensors(self):
+        for i in range(self.vertical_layout.count()):
+            self.vertical_layout.itemAt(i).widget().deleteLater()
+        
+
 
     def button_click(self):
         number_of_sensors = self.textbox.text
@@ -80,5 +83,6 @@ w.textBox()
 w.enter_button()
 submit = w.button("Submit")
 clear = w.button("Clear")
+clear.clicked.connect(w.clear_sensors)
 w.show()
 app.exec_()
