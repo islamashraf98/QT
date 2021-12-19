@@ -54,7 +54,8 @@ class MainWindow(QMainWindow):
         pb = QPushButton()
         pb.setText(text)
         self.horizontal_layout2.addWidget(pb)
-
+        return pb
+        
     def sensors(self):
         self.previous_layout = None
         number_of_sensors = int(self.textbox.text())
