@@ -1,55 +1,55 @@
-from PyQt5.QtWidgets import QComboBox, QMainWindow, QApplication, QWidget, QVBoxLayout
+import PyQt5.QtWidgets as pyqt
 from PyQt5.QtGui import QIcon
+from PyQt5 import QtGui
 import sys
 
 
-class MainWindow(QMainWindow):
+class MainWindow(pyqt.QMainWindow):
 
     def __init__(self):
         super().__init__()
+        self.setWindowTitle("Configurations")
+        self.setGeometry(400, 400, 700, 400)
+
+        # Horizontal layout for the label number of sensors and textbox
+        self.horizontal_layout = pyqt.QHBoxLayout()
+
+        # Parent layout for any layout in the class
+        self.layout = pyqt.QVBoxLayout()
+
+        # Adding the horizontal_layout to the parent layout
+        self.layout.addLayout(self.horizontal_layout)
+
+        # Setting the parent layout as the main layout
+        container = pyqt.QWidget()
+        container.setLayout(self.layout)
+        self.setMenuWidget(container)
+
+        # Open in full screen
         self.showMaximized()
-        combobox1 = QComboBox()
-        combobox1.addItem('One')
-        combobox1.addItem('Two')
-        combobox1.addItem('Three')
-        combobox1.addItem('Four')
 
-        combobox2 = QComboBox()
-        combobox2.addItems(['One', 'Two', 'Three', 'Four'])
+    def label(self, text):
+        label = pyqt.QLabel (text, self)
+        label.setFont(QtGui.QFont('Arial', 15)) 
+        label.adjustSize()
+        self.horizontal_layout.addWidget(label)
 
-        combobox3 = QComboBox()
-        combobox3.addItems(['One', 'Two', 'Three', 'Four'])
-        combobox3.insertItem(2, 'Hello!')
+    def textBox(self):
+        self.textbox = pyqt.QLineEdit(self)
+        self.horizontal_layout.addWidget(self.textbox)
 
-        combobox4 = QComboBox()
-        combobox4.addItems(['One', 'Two', 'Three', 'Four'])
-        combobox4.insertItems(2, ['Hello!', 'again'])
+    def button(self):
+        self.pb = pyqt.QPushButton()
+        self.pb.setText("Enter")
+        self.horizontal_layout.addWidget(self.pb)
 
-        combobox5 = QComboBox()
-        icon_penguin = QIcon('animal-penguin.png')
-        icon_monkey = QIcon('animal-monkey.png')
-        icon_bauble = QIcon('bauble.png')
-        combobox5.addItem(icon_penguin, 'Linux')
-        combobox5.addItem(icon_monkey, 'Monkeyix')
-        combobox5.insertItem(1, icon_bauble, 'Baublix')
+    def button_click(self):
+        number_of_sensors = self.textbox.text
+        print (number_of_sensors)
 
-        layout = QVBoxLayout()
-        layout.addWidget(combobox1)
-        layout.addWidget(combobox2)
-        layout.addWidget(combobox3)
-        layout.addWidget(combobox4)
-        layout.addWidget(combobox5)
-
-        container = QWidget()
-        container.setLayout(layout)
-
-        self.setCentralWidget(container)
-
-    def current_text_changed(self, s):
-        print("Current text: ", s)
-
-
-app = QApplication(sys.argv)
+app = pyqt.QApplication(sys.argv)
 w = MainWindow()
+w.label("Number of sensors")
+w.textBox()
 w.show()
 app.exec_()
