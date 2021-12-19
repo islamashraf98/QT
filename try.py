@@ -50,7 +50,7 @@ class MainWindow(QMainWindow):
         self.horizontal_layout1.addWidget(pb)
         pb.clicked.connect(self.sensors)   
 
-    def submit_button(self, text):
+    def button(self, text):
         pb = QPushButton()
         pb.setText(text)
         self.horizontal_layout2.addWidget(pb)
@@ -77,7 +77,7 @@ w = MainWindow()
 w.label("Number of sensors")
 w.textBox()
 w.enter_button()
-w.submit_button("Submit")
-w.submit_button("Clear")
+submit = w.button("Submit")
+clear = w.button("Clear")
 w.show()
 app.exec_()
