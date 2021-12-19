@@ -5,6 +5,11 @@ import sys
 import socket
 import json
 
+
+FONT_TYPE = 'Arial'
+LAR_FONT_SIZE = 30
+MED_FONT_SIZE = 15
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -43,13 +48,11 @@ class MainWindow(QMainWindow):
 
     def label(self, text):
         label = QLabel (text, self)
-        label.setFont(QtGui.QFont('Arial', 15)) 
         label.adjustSize()
         self.input_layout.addWidget(label)
 
     def camera(self):
         label = QLabel ("Camera power", self)
-        label.setFont(QtGui.QFont('Arial', 10)) 
         label.adjustSize()
         self.yes = QRadioButton("On", self)
         self.no = QRadioButton("Off", self)
@@ -64,6 +67,7 @@ class MainWindow(QMainWindow):
     def enter_button(self):
         pb = QPushButton()
         pb.setText("Enter")
+        
         self.input_layout.addWidget(pb)
         pb.clicked.connect(self.sensors)   
 
@@ -79,6 +83,7 @@ class MainWindow(QMainWindow):
         self.combobox_options = []
         for i in range(number_of_sensors):
             sensors_combobox = QComboBox()
+            sensors_combobox.setFont(QtGui.QFont(FONT_TYPE, MED_FONT_SIZE)) 
             sensors_combobox.addItems([x for x in types_of_sensors])
             self.sensors_layout.addWidget(sensors_combobox)
             self.combobox_options.append(sensors_combobox)
@@ -96,13 +101,9 @@ class MainWindow(QMainWindow):
         for i in range(self.camera_layout.count()):
             self.camera_layout.itemAt(i).widget().deleteLater()
         
-        
 
-    def send_data(self, data):
+    def send_data(self, data,TCP_IP='127.0.0.1',TCP_PORT=8000,BUFFER_SIZE=1024):
         data= str.encode(json.dumps(data))
-        TCP_IP = '127.0.0.1'
-        TCP_PORT = 8000
-        BUFFER_SIZE = 1024
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((TCP_IP, TCP_PORT))
         s.send(data)
@@ -119,6 +120,7 @@ class MainWindow(QMainWindow):
             
 
 app = QApplication(sys.argv)
+app.setFont(QtGui.QFont(FONT_TYPE, MED_FONT_SIZE))
 w = MainWindow()
 w.label("Number of sensors")
 w.textBox()
