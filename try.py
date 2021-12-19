@@ -10,25 +10,25 @@ class MainWindow(QMainWindow):
         self.setGeometry(400, 400, 700, 400)
 
         # Horizontal layout for the label number of sensors and textbox and enter button
-        self.horizontal_layout1 = QHBoxLayout()
+        self.input_layout = QHBoxLayout()
 
         # Vertical layout for sensors
-        self.vertical_layout = QVBoxLayout()
+        self.sensors_layout = QVBoxLayout()
 
         # Horizontal layout for camera
-        self.horizontal_layout3 = QHBoxLayout()
+        self.camera_layout = QHBoxLayout()
 
         # Horizontal layout for submit and clear buttons
-        self.horizontal_layout2 = QHBoxLayout()
+        self.submit_clear_layout = QHBoxLayout()
 
         # Parent layout for any layout in the class
         self.layout = QVBoxLayout()
 
         # Adding the children to the parent layout
-        self.layout.addLayout(self.horizontal_layout1)
-        self.layout.addLayout(self.vertical_layout)
-        self.layout.addLayout(self.horizontal_layout3)
-        self.layout.addLayout(self.horizontal_layout2)
+        self.layout.addLayout(self.input_layout)
+        self.layout.addLayout(self.sensors_layout)
+        self.sensors_layout.addLayout(self.camera_layout)
+        self.layout.addLayout(self.submit_clear_layout)
 
         # Setting the parent layout as the main layout
         container = QWidget()
@@ -43,7 +43,7 @@ class MainWindow(QMainWindow):
         label = QLabel (text, self)
         label.setFont(QtGui.QFont('Arial', 15)) 
         label.adjustSize()
-        self.horizontal_layout1.addWidget(label)
+        self.input_layout.addWidget(label)
 
     def camera(self):
         label = QLabel ("Camera power", self)
@@ -51,24 +51,24 @@ class MainWindow(QMainWindow):
         label.adjustSize()
         self.yes = QRadioButton("On", self)
         self.no = QRadioButton("Off", self)
-        self.horizontal_layout3.addWidget(label)
-        self.horizontal_layout3.addWidget(self.yes)
-        self.horizontal_layout3.addWidget(self.no)
+        self.camera_layout.addWidget(label)
+        self.camera_layout.addWidget(self.yes)
+        self.camera_layout.addWidget(self.no)
 
     def textBox(self):
         self.textbox = QLineEdit(self)
-        self.horizontal_layout1.addWidget(self.textbox)
+        self.input_layout.addWidget(self.textbox)
 
     def enter_button(self):
         pb = QPushButton()
         pb.setText("Enter")
-        self.horizontal_layout1.addWidget(pb)
+        self.input_layout.addWidget(pb)
         pb.clicked.connect(self.sensors)   
 
     def button(self, text):
         pb = QPushButton()
         pb.setText(text)
-        self.horizontal_layout2.addWidget(pb)
+        self.submit_clear_layout.addWidget(pb)
         return pb
 
     def sensors(self):
@@ -78,16 +78,22 @@ class MainWindow(QMainWindow):
         for i in range(number_of_sensors):
             sensors_combobox = QComboBox()
             sensors_combobox.addItems([x for x in types_of_sensors])
-            self.vertical_layout.addWidget(sensors_combobox)
+            self.sensors_layout.addWidget(sensors_combobox)
             self.combobox_options.append(sensors_combobox)
-        self.layout.addLayout(self.vertical_layout)
-        self.camera()
+        self.layout.addLayout(self.sensors_layout)
+
+        if(self.camera_layout.count() == 0):
+            self.camera()
         
-        self.layout.addLayout(self.vertical_layout)
+        self.layout.addLayout(self.sensors_layout)
 
     def clear_sensors(self):
-        for i in range(self.vertical_layout.count()):
-            self.vertical_layout.itemAt(i).widget().deleteLater()
+        for i in range(self.sensors_layout.count()):
+            if(self.sensors_layout.itemAt(i).layout() == None):
+                self.sensors_layout.itemAt(i).widget().deleteLater()
+        for i in range(self.camera_layout.count()):
+            self.camera_layout.itemAt(i).widget().deleteLater()
+        
         
 
     def button_click(self):
